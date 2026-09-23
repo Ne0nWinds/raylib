@@ -359,6 +359,8 @@ typedef struct CoreData {
             bool cursorOnScreen;            // Tracks if cursor is inside client area
 
             char currentButtonState[MAX_MOUSE_BUTTONS]; // Registers current mouse button state
+            char pressedButtonState[MAX_MOUSE_BUTTONS]; // Registers pressed mouse button state
+            char releasedButtonState[MAX_MOUSE_BUTTONS]; // Registers released mouse button state
             char previousButtonState[MAX_MOUSE_BUTTONS]; // Registers previous mouse button state
             Vector2 currentWheelMove;       // Registers current mouse wheel variation
             Vector2 previousWheelMove;      // Registers previous mouse wheel variation
@@ -4109,7 +4111,7 @@ bool IsMouseButtonPressed(int button)
 
     if ((button >= 0) && (button <= MOUSE_BUTTON_BACK))
     {
-        if ((CORE.Input.Mouse.currentButtonState[button] == 1) && (CORE.Input.Mouse.previousButtonState[button] == 0)) pressed = true;
+        if (CORE.Input.Mouse.pressedButtonState[button] == 1) pressed = true;
 
         // Map touches to mouse buttons checking
         if ((CORE.Input.Touch.currentTouchState[button] == 1) && (CORE.Input.Touch.previousTouchState[button] == 0)) pressed = true;
@@ -4141,7 +4143,7 @@ bool IsMouseButtonReleased(int button)
 
     if ((button >= 0) && (button <= MOUSE_BUTTON_BACK))
     {
-        if ((CORE.Input.Mouse.currentButtonState[button] == 0) && (CORE.Input.Mouse.previousButtonState[button] == 1)) released = true;
+        if (CORE.Input.Mouse.releasedButtonState[button] == 1) released = true;
 
         // Map touches to mouse buttons checking
         if ((CORE.Input.Touch.currentTouchState[button] == 0) && (CORE.Input.Touch.previousTouchState[button] == 1)) released = true;

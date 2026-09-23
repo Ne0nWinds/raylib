@@ -1358,8 +1358,12 @@ void PollInputEvents(void)
     // Reset key repeats
     for (int i = 0; i < MAX_KEYBOARD_KEYS; i++) CORE.Input.Keyboard.keyRepeatInFrame[i] = 0;
 
-    // Register previous mouse states
+    // Register previous mouse button states
     for (int i = 0; i < MAX_MOUSE_BUTTONS; i++) CORE.Input.Mouse.previousButtonState[i] = CORE.Input.Mouse.currentButtonState[i];
+
+	// clear pressed/released mouse button states for this frame
+    for (int i = 0; i < MAX_MOUSE_BUTTONS; i++) CORE.Input.Mouse.pressedButtonState[i] = 0;
+    for (int i = 0; i < MAX_MOUSE_BUTTONS; i++) CORE.Input.Mouse.releasedButtonState[i] = 0;
 
     // Reset last gamepad button/axis registered state
     CORE.Input.Gamepad.lastButtonPressed = 0; // GAMEPAD_BUTTON_UNKNOWN
@@ -2084,6 +2088,13 @@ static void HandleMouseButton(int button, char state)
     // Register current mouse button state
     CORE.Input.Mouse.currentButtonState[button] = state;
     CORE.Input.Touch.currentTouchState[button] = state;
+
+    if (state) {
+		CORE.Input.Mouse.pressedButtonState[button] = 1;
+    }
+    else {
+		CORE.Input.Mouse.releasedButtonState[button] = 1;
+    }
 }
 
 // Handle raw input event
